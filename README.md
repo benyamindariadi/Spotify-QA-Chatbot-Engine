@@ -23,6 +23,12 @@ and much more!
 ```bash
 streamlit run server.py
 ```
+- NOTE: If you're experiencing a bad time while making the python environment, you are not alone. Here I've uploaded the [environment.yml](environment.yml). 
+- Moreover, if you want to use CUDA running with the app here are some preflight checklists:
+ - Make sure that your torch already detects the GPU with ```torch.cuda.is_available()```
+ - To enable Llama.cpp with CUDA, please follow the instructions in their [repository](https://github.com/abetlen/llama-cpp-python)
+   - For windows user, I have a little secret. DON'T FOLLOW ITS INSTRUCTION IN THE REPO. Try this:
+     ```! set FORCE_CMAKE=1 && set "CMAKE_ARGS=-DLLAMA_CUBLAS=on" &&  pip install llama-cpp-python --no-cache-dir --user --verbose```
 
 ## ⚙️ Configuration 🛠️
 - This app supports the local model🐌
