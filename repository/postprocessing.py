@@ -18,4 +18,3 @@ class DuplicateRemoverNodePostprocessor:
                 unique_hashes.add(node_hash)
                 unique_nodes.append(node)
         return unique_nodes
-

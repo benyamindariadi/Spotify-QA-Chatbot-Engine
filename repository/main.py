@@ -66,7 +66,6 @@ class RunRag:
         )
         return service_context
 
-
     def run(self):
         embed_model = self.load_embed_model()
         llm = self.load_llm_model()
