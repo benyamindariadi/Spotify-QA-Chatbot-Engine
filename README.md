@@ -30,10 +30,6 @@ self.llm_model_path = put_your_model_directory
 
 ## 📚 Examples
 https://github.com/benyamindariadi/Spotify-QA-Chatbot-Engine/assets/57475499/a323dc5b-fb77-48df-bbc5-cb1fb7003037
--------
 https://github.com/benyamindariadi/Spotify-QA-Chatbot-Engine/assets/57475499/11db869b-ff43-41ed-9f76-e91c9e8d6397
--------
 https://github.com/benyamindariadi/Spotify-QA-Chatbot-Engine/assets/57475499/46ac570e-7783-46b1-8fd7-345dd0593f0c
--------
 https://github.com/benyamindariadi/Spotify-QA-Chatbot-Engine/assets/57475499/2684fc25-e9e6-4296-9bde-0578284d8d40
--------
