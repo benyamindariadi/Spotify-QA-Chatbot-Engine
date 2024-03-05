@@ -19,11 +19,11 @@ streamlit run server.py
 ## Configuration
 This app support local model. 
 Can use all embedding model from huggingface.
-insert the name of the model in repository.main.py 
+insert the name of the model in [repository/main.py](https://github.com/benyamindariadi/Spotify-QA-Chatbot-Engine/blob/e6f48ce8e16096e1c783d70ac068814e4ddb5d1c/repository/main.py#L15)
 ```bash
 self.embed_model_name = put_your_model_name_here
 ```
-For LLM model this app support LlamaCPP so put the model directory in repository.main.py 
+For LLM model this app support LlamaCPP so put the model directory in [repository/main.py](https://github.com/benyamindariadi/Spotify-QA-Chatbot-Engine/blob/e6f48ce8e16096e1c783d70ac068814e4ddb5d1c/repository/main.py#L18C9-L18C73)
 ```bash
 self.llm_model_path = put_your_model_directory
 ```
