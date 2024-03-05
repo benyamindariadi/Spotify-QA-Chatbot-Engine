@@ -3,11 +3,11 @@ from repository.main import RunRag
 from llama_index.core.chat_engine.types import ChatMode
 from llama_index.core.indices.postprocessor import SentenceEmbeddingOptimizer
 from repository.postprocessing import DuplicateRemoverNodePostprocessor
-# from llama_index.core.callbacks import LlamaDebugHandler, CallbackManager
-# from llama_index.core import ServiceContext
 import time
 
 rag = RunRag()
+
+
 @st.cache_resource(show_spinner=False)
 def get_index():
     indexing, service_ctx = rag.run()
@@ -18,8 +18,8 @@ index, service_context = get_index()
 if "chat_engine" not in st.session_state.keys():
     postprocessor = SentenceEmbeddingOptimizer(
         embed_model=service_context.embed_model,
-        percentile_cutoff=0.5,
-        # threshold_cutoff=0.6
+        # percentile_cutoff=0.5,
+        threshold_cutoff=0.55
     )
 
     st.session_state.chat_engine = index.as_chat_engine(
@@ -44,7 +44,7 @@ if "messages" not in st.session_state.keys():
     st.session_state.messages = [
         {
             "role": "assistant",
-            "content": "Ask me a question about Spotify mobile application review?",
+            "content": "Ask me a question about Spotify mobile application review!",
         }
     ]
 if prompt := st.chat_input("Your question"):
@@ -54,20 +54,40 @@ for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.write(message["content"])
 
-def stream_data():
+
+def stream_data_resp():
     for w in response.response.split():
         yield w + " "
         time.sleep(0.02)
 
+
+def stream_data_exception():
+    for w in resp_msg.split():
+        yield w + " "
+        time.sleep(0.02)
+
+
 if st.session_state.messages[-1]["role"] == "user":
     with st.chat_message("assistant"):
         with st.spinner("Thinking..."):
-            response = st.session_state.chat_engine.chat(message=prompt)
-            st.write_stream(stream_data)
-            nodes = [node for node in response.source_nodes]
-            for col, node, i in zip(st.columns(len(nodes)), nodes, range(len(nodes))):
-                with col:
-                    st.text(f"Source Node {i+1}: score= {node.score}")
-                    st.write(node.text)
-            message = {"role": "assistant", "content": response.response}
+            try:
+                response = st.session_state.chat_engine.chat(message=prompt)
+                st.write_stream(stream_data_resp)
+                nodes = [node for node in response.source_nodes]
+                for col, node, i in zip(st.columns(len(nodes)), nodes, range(len(nodes))):
+                    with col:
+                        st.text(f"Source Node {i + 1}: score= {node.score}")
+                        st.write(node.text)
+                message = {"role": "assistant", "content": response.response}
+            except Exception as e:
+                print(e)
+                if str(e) == "Optimizer returned zero sentences.":
+                    resp_msg = ("Sorry I don't have that information in my database, please ask me a relevant question "
+                                "based on my function.")
+                    st.write_stream(stream_data_exception)
+                    message = {"role": "assistant", "content": resp_msg}
+                else:
+                    resp_msg = "Sorry we experiencing an error. Please reload the app."
+                    st.write_stream(stream_data_exception)
+                    message = {"role": "assistant", "content": resp_msg}
             st.session_state.messages.append(message)
